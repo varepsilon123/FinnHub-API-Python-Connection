@@ -1,4 +1,4 @@
-import finnhub
+from finnhub import finnhub
 
 # Setup client
 finnhub_client = finnhub.Client(api_key="btvkm4748v6uc2r6kpp0")
