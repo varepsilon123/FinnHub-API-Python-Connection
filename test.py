@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 
 init_notebook_mode()
 
-client = Finnhub.Client(api_key="bpm660nrh5r8rtje5kh0")
+client = Finnhub.Client(api_key="btvkm4748v6uc2r6kpp0")
 source = client.stock_candle(symbol="AAPL", resolution="15", count=400)
 
 df = pd.DataFrame(data=source)
