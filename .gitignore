@@ -4,3 +4,9 @@ output
 
 # ignore test files
 *test.py
+
+# ignore windows files
+*.bat
+
+# ignore cache
+__pycache__
