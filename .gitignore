@@ -1,0 +1,6 @@
+# ignore data set and output result files
+data
+output
+
+# ignore test files
+*test.py
