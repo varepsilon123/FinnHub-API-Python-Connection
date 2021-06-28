@@ -119,9 +119,9 @@ exportList = exportList.sort_values(by='RS_Rating', ascending=False)
 print('\n', exportList)
 
 today = date.today()
-d1 = today.strftime("%Y%m%d")
+today_date = today.strftime("%Y%m%d")
 
-Path(f"../output/{d1}").mkdir(parents=True, exist_ok=True)
-writer = ExcelWriter(f"../output/{d1}/ScreenOutput_hk_{d1}.xlsx")
+Path(f"../output/{today_date}").mkdir(parents=True, exist_ok=True)
+writer = ExcelWriter(f"../output/{today_date}/ScreenOutput_hk_{today_date}.xlsx")
 exportList.to_excel(writer, "Sheet1")
 writer.save()

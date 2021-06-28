@@ -11,9 +11,9 @@ if __name__ == '__main__':
     # index_array = ['hsi']
     
     today = date.today()
-    d1 = today.strftime("%Y%m%d")
+    today_date = today.strftime("%Y%m%d")
     Path(f"output").mkdir(parents=True, exist_ok=True)
-    writer = ExcelWriter(f"output/ScreenOutput_{d1}.xlsx")
+    writer = ExcelWriter(f"output/ScreenOutput_{today_date}.xlsx")
     
     temp = {}
     
@@ -27,4 +27,4 @@ if __name__ == '__main__':
     # writer.close()
     
     testing = False
-    send_mail.send(d1, testing);
+    send_mail.send(today_date, testing);
