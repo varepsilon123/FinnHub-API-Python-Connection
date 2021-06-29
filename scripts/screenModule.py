@@ -27,6 +27,7 @@ def make_dir(index_name):
         return True
 
 def remove_dir():
+    # remove dataset older than a week
     keepingDates = []
     for x in range(0, 7):
         date_str = (today - datetime.timedelta(days = x)).strftime("%Y%m%d")
@@ -69,8 +70,6 @@ def get_index_ticker(index_name):
         return '^IXIC'
 
 def screen(index_name):
-    # remove old datasets. keep recent 1 week dataset only
-
     # make directory
     download_data = make_dir(index_name)
 
