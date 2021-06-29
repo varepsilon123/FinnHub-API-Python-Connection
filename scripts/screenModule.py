@@ -28,7 +28,7 @@ def make_dir(index_name):
 
 def remove_dir():
     keepingDates = []
-    for x in range(1, 7):
+    for x in range(0, 7):
         date_str = (today - datetime.timedelta(days = x)).strftime("%Y%m%d")
         keepingDates.append(date_str)
 
@@ -69,8 +69,7 @@ def get_index_ticker(index_name):
         return '^IXIC'
 
 def screen(index_name):
-    # remove old datasets
-    remove_dir();
+    # remove old datasets. keep recent 1 week dataset only
 
     # make directory
     download_data = make_dir(index_name)
@@ -93,16 +92,11 @@ def screen(index_name):
     list_length = len(tickers)
     count = 0
 
-    if (download_data):
-        print('Downloading data from Yahoo')
-    else:
-        print('Reading local data')
-
     # Find top 30% performing stocks (relative to the index)
     for ticker in tickers:
         count += 1
 
-        if (download_data or not os.path.isfile(f'data/{today_date}/{index_name}/{ticker}_.csv')):
+        if (not os.path.isfile(f'data/{today_date}/{index_name}/{ticker}_.csv')):
             # Download historical data as CSV for each stock (makes the process faster)
             df = pdr.get_data_yahoo(ticker, start_date, end_date)
             df.to_csv(f'data/{today_date}/{index_name}/{ticker}_.csv')
@@ -171,10 +165,12 @@ def screen(index_name):
             condition_5 = currentClose > moving_average_50
 
             # Condition 6: Current Price is at least 30% above 52 week low
-            condition_6 = currentClose >= (1.3*low_of_52week)
+            # condition_6 = currentClose >= (1.3*low_of_52week)
+            condition_6 = currentClose >= (1.7*low_of_52week)
 
             # Condition 7: Current Price is within 25% of 52 week high
-            condition_7 = currentClose >= (.75*high_of_52week)
+            # condition_7 = currentClose >= (.75*high_of_52week)
+            condition_7 = currentClose >= (.9*high_of_52week)
 
             # If all conditions above are true, add stock to exportList
             if(condition_1 and condition_2 and condition_3 and condition_4 and condition_5 and condition_6 and condition_7):
