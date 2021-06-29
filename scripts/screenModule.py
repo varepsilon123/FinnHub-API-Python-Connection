@@ -2,11 +2,14 @@
 from pandas_datareader import data as pdr
 from yahoo_fin import stock_info as si
 from pandas import ExcelWriter
+from os import walk
+
 import yfinance as yf
 import pandas as pd
 import datetime
 import time
 import os.path
+import shutil
 from datetime import date
 from pathlib import Path
 yf.pdr_override()
@@ -23,7 +26,19 @@ def make_dir(index_name):
         Path(f'data/{today_date}/{index_name}/').mkdir(parents=True, exist_ok=True)
         return True
 
-def remove_dir
+def remove_dir():
+    keepingDates = []
+    for x in range(1, 7):
+        date_str = (today - datetime.timedelta(days = x)).strftime("%Y%m%d")
+        keepingDates.append(date_str)
+
+    f = []
+    for (dirpath, dirnames, filenames) in walk('data'):
+        f.extend(dirnames)
+        break
+    for dirname in f:
+        if not any(dirname in element for element in keepingDates):
+            shutil.rmtree(f'data/{dirname}')
 
 def get_tickers(index_name):
     if index_name == 'hsi':
@@ -54,6 +69,9 @@ def get_index_ticker(index_name):
         return '^IXIC'
 
 def screen(index_name):
+    # remove old datasets
+    remove_dir();
+
     # make directory
     download_data = make_dir(index_name)
 
