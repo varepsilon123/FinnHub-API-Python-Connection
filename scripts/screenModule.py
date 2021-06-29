@@ -96,6 +96,7 @@ def screen(index_name):
         count += 1
 
         if (not os.path.isfile(f'data/{today_date}/{index_name}/{ticker}_.csv')):
+            time.sleep(0.02)
             # Download historical data as CSV for each stock (makes the process faster)
             df = pdr.get_data_yahoo(ticker, start_date, end_date)
             df.to_csv(f'data/{today_date}/{index_name}/{ticker}_.csv')
@@ -114,7 +115,6 @@ def screen(index_name):
         returns_multiples.extend([returns_multiple])
 
         print (f'Ticker: {ticker}; Returns Multiple against {index_name}: {returns_multiple} \t {count} / {list_length}\n')
-        time.sleep(0.02)
 
     # Creating dataframe of only top 30%
     rs_df = pd.DataFrame(list(zip(tickers, returns_multiples)), columns=['Ticker', 'Returns_multiple'])
