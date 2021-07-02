@@ -7,7 +7,12 @@ from scripts import screenModule
 from scripts import send_mail
 
 if __name__ == '__main__':
-    index_array = ['hsi','dow','sp500','nasdaq']
+
+    testing = False
+    # testing = True
+
+    # index_array = ['hsi','dow','sp500','nasdaq']
+    index_array = ['dow','sp500','nasdaq']
     # index_array = ['hsi']
 
     today = date.today()
@@ -19,7 +24,7 @@ if __name__ == '__main__':
 
     temp = {}
     for value in index_array:
-        temp[value] = screenModule.screen(value)
+        temp[value] = screenModule.screen(value, testing)
 
     for value in index_array:
         temp[value].to_excel(writer, sheet_name = value)
@@ -27,6 +32,4 @@ if __name__ == '__main__':
     writer.save()
     # writer.close()
 
-    # testing = True
-    testing = False
     send_mail.send(today_date, testing);
