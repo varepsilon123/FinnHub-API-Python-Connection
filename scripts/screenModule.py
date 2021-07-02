@@ -43,7 +43,8 @@ def remove_dir():
 
 def get_tickers(index_name):
     if index_name == 'hsi':
-        payload=pd.read_html('https://finance.yahoo.com/quote/%5EHSI/components/')
+        # payload=pd.read_html('https://finance.yahoo.com/quote/%5EHSI/components/')
+        payload=pd.read_html(requests.get('https://finance.yahoo.com/quote/%5EHSI/components/',headers={'User-agent': 'Mozilla/5.0'}).text)
         table_0 = payload[0]
         df = table_0
         tickers = df['Symbol'].values.tolist()
@@ -69,7 +70,7 @@ def get_index_ticker(index_name):
     elif index_name == 'nasdaq':
         return '^IXIC'
 
-def screen(index_name):
+def screen(index_name, testing):
     # make directory
     download_data = make_dir(index_name)
 
@@ -164,17 +165,34 @@ def screen(index_name):
             condition_5 = currentClose > moving_average_50
 
             # Condition 6: Current Price is at least 30% above 52 week low
-            # condition_6 = currentClose >= (1.3*low_of_52week)
-            condition_6 = currentClose >= (1.7*low_of_52week)
+            condition_6 = currentClose >= (1.3*low_of_52week)
+            if (testing) :
+                condition_6 = currentClose >= (1.7*low_of_52week)
 
             # Condition 7: Current Price is within 25% of 52 week high
-            # condition_7 = currentClose >= (.75*high_of_52week)
-            condition_7 = currentClose >= (.9*high_of_52week)
+            condition_7 = currentClose >= (.75*high_of_52week)
+            if (testing) :
+                condition_7 = currentClose >= (.9*high_of_52week)
+
+            # Condition 8: Current Price > $10
+            condition_8 = True
+            if (testing) :
+                condition_8 = currentClose >= 10
 
             # If all conditions above are true, add stock to exportList
-            if(condition_1 and condition_2 and condition_3 and condition_4 and condition_5 and condition_6 and condition_7):
-                exportList = exportList.append({'Stock': stock, "RS_Rating": RS_Rating ,"50 Day MA": moving_average_50, "150 Day Ma": moving_average_150, "200 Day MA": moving_average_200, "52 Week Low": low_of_52week, "52 week High": high_of_52week}, ignore_index=True)
-                count += 1
+            if(condition_1 and condition_2 and condition_3 and condition_4 and condition_5 and condition_6 and condition_7 and condition_8):
+                exportList = exportList.append({
+                    'Stock': stock,
+                    "RS_Rating": RS_Rating,
+                    "50 Day MA": moving_average_50,
+                    "150 Day Ma": moving_average_150,
+                    "200 Day MA": moving_average_200,
+                    "52 Week Low": low_of_52week,
+                    "52 week High": high_of_52week,
+                    "Current Close": currentClose,
+                    "Close / 200 MA": currentClose/moving_average_200,
+                    "<=1.5?": True if ((currentClose/moving_average_200) <= 1.5) else None
+                    }, ignore_index=True)
                 print (f"{stock} made the Minervini requirements \t {count} / {list_length}\n")
         except Exception as e:
             print (e)

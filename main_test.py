@@ -11,8 +11,8 @@ if __name__ == '__main__':
     testing = False
     testing = True
 
-    # index_array = ['hsi','dow','sp500','nasdaq']
-    index_array = ['dow']
+    index_array = ['dow','sp500','nasdaq']
+    # index_array = ['dow']
 
     today = date.today()
     today_date = today.strftime("%Y%m%d")
